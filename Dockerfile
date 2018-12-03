@@ -1,4 +1,4 @@
-FROM fedora:28
+FROM fedora:29
 
 RUN dnf update -y \
   && dnf install -y \
@@ -6,6 +6,7 @@ RUN dnf update -y \
     git \
     podman \
     make \
+    skopeo \
     which \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
