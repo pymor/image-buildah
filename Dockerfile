@@ -1,7 +1,6 @@
 FROM fedora:29
 
-RUN dnf update -y \
-  && dnf install -y \
+RUN dnf install -y \
     git \
     make \
     which \
