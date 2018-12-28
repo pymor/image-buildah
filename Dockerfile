@@ -6,7 +6,7 @@ RUN dnf update -y \
     make \
     which \
     buildah-1.5 \
-    podman-0.10.1.3 \
+    podman-0.12.1.2 \
     skopeo-0.1.32 \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
