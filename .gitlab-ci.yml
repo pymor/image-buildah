@@ -28,7 +28,7 @@ build:
   <<: *job
   stage: build
   script:
-    - docker build -t "${IMAGE_RELEASE}" .
+    - docker build -t "${IMAGE_RELEASE}" --build-arg VERSION=${CI_COMMIT_SHORT_SHA} .
     - docker push "${IMAGE_RELEASE}"
 
 test:

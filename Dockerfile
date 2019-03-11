@@ -1,5 +1,7 @@
 FROM fedora:29
 
+ARG VERSION=dev
+
 RUN dnf install -y \
     git \
     make \
