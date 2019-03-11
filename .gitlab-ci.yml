@@ -1,0 +1,59 @@
+# required variables
+# REGISTRY_USERNAME
+# REGISTRY_PASSWORD
+
+variables:
+  REGISTRY_SERVER: docker.io
+  RELEASE_IMAGE_NAME: tomkukral/buildah
+  IMAGE_NAME: ${REGISTRY_SERVER}/${RELEASE_IMAGE_NAME}
+
+stages:
+  - build
+  - release
+
+.job: &job
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker version
+    - docker login --username "${REGISTRY_USERNAME}" --password "${REGISTRY_PASSWORD}" "${REGISTRY_SERVER}"
+  after_script:
+    - docker logout "${REGISTRY_SERVER}"
+
+build:
+  <<: *job
+  stage: build
+  script:
+    - docker build -t "${IMAGE_NAME}:${CI_COMMIT_SHA}" .
+    - docker push "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+
+release-tag:
+  <<: *job
+  stage: release
+  only:
+    - tags
+  script:
+    - docker pull "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+    - docker tag "${IMAGE_NAME}:${CI_COMMIT_SHA}" "${IMAGE_NAME}:${CI_COMMIT_TAG}"
+    - docker push "${IMAGE_NAME}:${CI_COMMIT_TAG}"
+
+release-latest:
+  <<: *job
+  stage: release
+  only:
+    - master
+  script:
+    - docker pull "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+    - docker tag "${IMAGE_NAME}:${CI_COMMIT_SHA}" "${IMAGE_NAME}:latest"
+    - docker push "${IMAGE_NAME}:latest"
+
+release-branch:
+  <<: *job
+  stage: release
+  only:
+    - branches
+  script:
+    - docker pull "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+    - docker tag "${IMAGE_NAME}:${CI_COMMIT_SHA}" "${IMAGE_NAME}:branch-${CI_COMMIT_REF_SLUG}"
+    - docker push "${IMAGE_NAME}:branch-${CI_COMMIT_REF_SLUG}"
