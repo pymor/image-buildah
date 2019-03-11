@@ -41,7 +41,7 @@ test:
     - buildah version
     - podman version
     - skopeo --version
-    - skopeo inspect docker://${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
+    - skopeo inspect docker://${IMAGE_RELEASE}
 
 release-tag:
   <<: *job
