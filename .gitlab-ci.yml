@@ -9,6 +9,7 @@ variables:
 
 stages:
   - build
+  - test
   - release
 
 .job: &job
@@ -27,6 +28,16 @@ build:
   script:
     - docker build -t "${IMAGE_NAME}:${CI_COMMIT_SHA}" .
     - docker push "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+
+test:
+  <<: *job
+  image: "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+  script:
+    - git version
+    - buildah version
+    - podman version
+    - skopeo version
+    - skopeo inspect docker://${IMAGE_NAME}:${CI_COMMIT_SHA}
 
 release-tag:
   <<: *job
