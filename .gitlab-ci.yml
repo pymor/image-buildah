@@ -34,6 +34,8 @@ build:
 test:
   <<: *job
   image: "${IMAGE_RELEASE}"
+  before_script: []
+  after_script: []
   script:
     - git version
     - buildah version
