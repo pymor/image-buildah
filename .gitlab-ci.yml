@@ -6,9 +6,12 @@ variables:
   REGISTRY_SERVER: docker.io
   RELEASE_IMAGE_NAME: tomkukral/buildah
   IMAGE_NAME: ${REGISTRY_SERVER}/${RELEASE_IMAGE_NAME}
+  IMAGE_NAME_DEV: ${REGISTRY_SERVER}/${RELEASE_IMAGE_NAME}-dev
+  IMAGE_RELEASE: ${REGISTRY_SERVER}/${RELEASE_IMAGE_NAME}-dev:${CI_COMMIT_SHORT_SHA}
 
 stages:
   - build
+  - test
   - release
 
 .job: &job
@@ -25,8 +28,20 @@ build:
   <<: *job
   stage: build
   script:
-    - docker build -t "${IMAGE_NAME}:${CI_COMMIT_SHA}" .
-    - docker push "${IMAGE_NAME}:${CI_COMMIT_SHA}"
+    - docker build -t "${IMAGE_RELEASE}" --build-arg version=${CI_COMMIT_SHORT_SHA} .
+    - docker push "${IMAGE_RELEASE}"
+
+test:
+  <<: *job
+  image: "${IMAGE_RELEASE}"
+  before_script: []
+  after_script: []
+  script:
+    - git version
+    - buildah version
+    - podman version
+    - skopeo --version
+    - skopeo inspect docker://${IMAGE_RELEASE}
 
 release-tag:
   <<: *job
@@ -34,8 +49,8 @@ release-tag:
   only:
     - tags
   script:
-    - docker pull "${IMAGE_NAME}:${CI_COMMIT_SHA}"
-    - docker tag "${IMAGE_NAME}:${CI_COMMIT_SHA}" "${IMAGE_NAME}:${CI_COMMIT_TAG}"
+    - docker pull "${IMAGE_RELEASE}"
+    - docker tag "${IMAGE_RELEASE}" "${IMAGE_NAME}:${CI_COMMIT_TAG}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_TAG}"
 
 release-latest:
@@ -44,8 +59,8 @@ release-latest:
   only:
     - master
   script:
-    - docker pull "${IMAGE_NAME}:${CI_COMMIT_SHA}"
-    - docker tag "${IMAGE_NAME}:${CI_COMMIT_SHA}" "${IMAGE_NAME}:latest"
+    - docker pull "${IMAGE_RELEASE}"
+    - docker tag "${IMAGE_RELEASE}" "${IMAGE_NAME}:latest"
     - docker push "${IMAGE_NAME}:latest"
 
 release-branch:
@@ -54,6 +69,6 @@ release-branch:
   only:
     - branches
   script:
-    - docker pull "${IMAGE_NAME}:${CI_COMMIT_SHA}"
-    - docker tag "${IMAGE_NAME}:${CI_COMMIT_SHA}" "${IMAGE_NAME}:branch-${CI_COMMIT_REF_SLUG}"
-    - docker push "${IMAGE_NAME}:branch-${CI_COMMIT_REF_SLUG}"
+    - docker pull "${IMAGE_RELEASE}"
+    - docker tag "${IMAGE_RELEASE}" "${IMAGE_NAME_DEV}:branch-${CI_COMMIT_REF_SLUG}"
+    - docker push "${IMAGE_NAME_DEV}:branch-${CI_COMMIT_REF_SLUG}"
