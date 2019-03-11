@@ -40,7 +40,7 @@ test:
     - git version
     - buildah version
     - podman version
-    - skopeo version
+    - skopeo --version
     - skopeo inspect docker://${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}
 
 release-tag:
