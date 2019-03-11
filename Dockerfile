@@ -1,6 +1,8 @@
 FROM fedora:29
 
-ARG VERSION=dev
+ARG version=dev
+
+LABEL version=${version}
 
 RUN dnf install -y \
     git \
