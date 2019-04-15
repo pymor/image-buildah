@@ -5,6 +5,7 @@ ARG version=dev
 LABEL version=${version}
 
 RUN dnf install -y \
+    findutils \
     git \
     make \
     which \
