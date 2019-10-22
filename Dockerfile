@@ -9,8 +9,8 @@ RUN dnf install -y \
     git \
     make \
     which \
-    buildah-1.9.0 \
-    podman-1.4.4 \
+    buildah-1.11.3 \
+    podman-1.6.1 \
     skopeo-0.1.37 \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
