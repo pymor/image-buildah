@@ -53,15 +53,15 @@ release-tag:
     - docker tag "${IMAGE_RELEASE}" "${IMAGE_NAME}:${CI_COMMIT_TAG}"
     - docker push "${IMAGE_NAME}:${CI_COMMIT_TAG}"
 
-release-latest:
-  <<: *job
-  stage: release
-  only:
-    - master
-  script:
-    - docker pull "${IMAGE_RELEASE}"
-    - docker tag "${IMAGE_RELEASE}" "${IMAGE_NAME}:latest"
-    - docker push "${IMAGE_NAME}:latest"
+#release-latest:
+#  <<: *job
+#  stage: release
+#  only:
+#    - master
+#  script:
+#    - docker pull "${IMAGE_RELEASE}"
+#    - docker tag "${IMAGE_RELEASE}" "${IMAGE_NAME}:latest"
+#    - docker push "${IMAGE_NAME}:latest"
 
 release-branch:
   <<: *job
