@@ -1,4 +1,4 @@
-FROM fedora:30
+FROM fedora:31
 
 ARG version=dev
 
@@ -9,9 +9,9 @@ RUN dnf install -y \
     git \
     make \
     which \
-    buildah-1.11.3 \
-    podman-1.6.1 \
-    skopeo-0.1.37 \
+    buildah-1.11.4 \
+    podman-1.6.2 \
+    skopeo-0.1.40 \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
     /var/cache/dnf/ \
