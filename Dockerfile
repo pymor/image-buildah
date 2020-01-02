@@ -9,7 +9,7 @@ RUN dnf install -y \
     git \
     make \
     which \
-    buildah-1.11.4 \
+    buildah-1.12.0 \
     podman-1.6.2 \
     skopeo-0.1.40 \
   && rm -rf \
