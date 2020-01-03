@@ -16,3 +16,5 @@ RUN dnf install -y \
     /usr/lib64/python3.6/__pycache__/ \
     /var/cache/dnf/ \
     /var/log/dnf*.log
+
+COPY libpod.conf /etc/containers/libpod.conf
