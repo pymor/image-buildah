@@ -9,9 +9,9 @@ RUN dnf install -y \
     git \
     make \
     which \
-    buildah-1.14.2 \
-    podman-1.8.1 \
-    skopeo-0.1.41 \
+    buildah-1.14.8 \
+    podman-1.9.1 \
+    skopeo-0.2.0 \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
     /var/cache/dnf/ \
