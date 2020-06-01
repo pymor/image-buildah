@@ -12,6 +12,8 @@ RUN dnf install -y \
     buildah-1.14.8 \
     podman-1.9.1 \
     skopeo-0.2.0 \
+    unzip \
+    gettext \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
     /var/cache/dnf/ \
