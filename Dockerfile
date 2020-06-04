@@ -5,15 +5,16 @@ ARG version=dev
 LABEL version=${version}
 
 RUN dnf install -y \
+    buildah-1.14.9 \
     findutils \
+    gettext \
     git \
+    jq \
     make \
-    which \
-    buildah-1.14.8 \
-    podman-1.9.2 \
+    podman-1.9.3 \
     skopeo-0.2.0 \
     unzip \
-    gettext \
+    which \
   && rm -rf \
     /usr/lib64/python3.6/__pycache__/ \
     /var/cache/dnf/ \
